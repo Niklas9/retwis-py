@@ -1,11 +1,19 @@
 web:
+  image: nginx:1.7.8
+  links:
+    - api
+  volumes:
+    - ui:/var/www/html
+    - nginx:/nginx_conf
+  ports:
+    - "80:80"
+  command: /nginx_conf/run.sh
+api:
   build: .
-  command: /app/app.py
   links:
    - db
   volumes:
    - .:/app
-  ports:
-   - "5000:5000"
+  command: /app/app.py
 db:
-  image: redis
+  image: redis:2.8.17
